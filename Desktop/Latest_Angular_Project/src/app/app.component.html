@@ -1,0 +1,26 @@
+<div class="container">
+  <h1 class="title">📝 List To-Do </h1>
+
+  <form class="task-form" (ngSubmit)="addTask()">
+    <input [(ngModel)]="newTaskTitle" name="task" required placeholder="Add a new task..." />
+    <button type="submit">➕ Add Task</button>
+  </form>
+
+  <h2 class="list-title">📋 List Of Tasks</h2>
+
+  <div *ngIf="tasks.length > 0; else noTasks">
+    <ol class="task-list">
+      <li *ngFor="let task of tasks" class="task-list-item">
+        <app-task
+          [task]="task"
+          (update)="updateTask($event)"
+          (delete)="deleteTask($event)">
+        </app-task>
+      </li>
+    </ol>
+  </div>
+
+  <ng-template #noTasks>
+    <p class="no-tasks">No tasks yet. Please Start by adding one</p>
+  </ng-template>
+</div>

@@ -1,0 +1,10 @@
+<div class="task-card">
+    <div class="task-content">
+      <h3>{{ task.title }}</h3>
+      <select [(ngModel)]="task.status" (change)="onStatusChange(task.status)">
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+      <button class="delete-btn" (click)="deleteTask()">🗑️</button>
+    </div>
+  </div>
+  
