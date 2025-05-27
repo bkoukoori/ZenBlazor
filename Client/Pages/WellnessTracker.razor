@@ -1,0 +1,65 @@
+﻿@page "/tracker"
+@using System.Globalization
+@inject HttpClient Http
+
+<h3>🌿 ZenBlaze Wellness Tracker</h3>
+
+<div class="mb-3">
+    <label for="mood">Mood Today:</label>
+    <select @bind="entry.Mood" class="form-select">
+        <option>😊 Happy</option>
+        <option>😐 Neutral</option>
+        <option>😢 Sad</option>
+        <option>😤 Stressed</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label>Reflection:</label>
+    <textarea @bind="entry.Note" class="form-control" rows="4"></textarea>
+</div>
+<div>
+
+</div>
+<button class="btn btn-success" @onclick="SaveEntry">Save</button>
+
+
+
+<hr />
+
+<h4>📅 Past Entries</h4>
+<ul class="list-group">
+    @foreach (var item in entries)
+    {
+        <li class="list-group-item">
+            <strong>@item.Date:</strong> @item.Mood – @item.Note
+        </li>
+    }
+</ul>
+
+@code {
+    class WellnessEntry
+    {
+        public string Mood { get; set; } = "😊 Happy";
+        public string Note { get; set; } = "";
+        public string Date { get; set; } = DateTime.Now.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture);
+    }
+   
+    private WellnessEntry entry = new WellnessEntry();
+    private List<WellnessEntry> entries = new();
+
+    private void SaveEntry()
+    {
+        entries.Insert(0, new WellnessEntry
+        {
+            Mood = entry.Mood,
+            Note = entry.Note,
+            Date = DateTime.Now.ToString("MMM dd, yyyy")
+        });
+
+        entry.Note = "";
+    }
+
+}
+
+}

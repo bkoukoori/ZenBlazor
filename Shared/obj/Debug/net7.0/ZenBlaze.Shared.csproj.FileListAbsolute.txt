@@ -1,0 +1,12 @@
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/bin/Debug/net7.0/ZenBlaze.Shared.deps.json
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/bin/Debug/net7.0/ZenBlaze.Shared.dll
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/bin/Debug/net7.0/ZenBlaze.Shared.pdb
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.csproj.AssemblyReference.cache
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.AssemblyInfoInputs.cache
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.AssemblyInfo.cs
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.csproj.CoreCompileInputs.cache
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.dll
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/refint/ZenBlaze.Shared.dll
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ZenBlaze.Shared.pdb
+/Users/bee/Projects/ZenBlaze/ZenBlaze/Shared/obj/Debug/net7.0/ref/ZenBlaze.Shared.dll

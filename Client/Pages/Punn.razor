@@ -1,0 +1,142 @@
+﻿@page "/punngenerate"
+@inject HttpClient Http
+
+<h3>🧠 Redis Puns Manager</h3>
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link @(activeTab == "get" ? "active" : "")" @onclick='() => SetTab("get")'>
+            🔍 Get Pun
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(activeTab == "add" ? "active" : "")" @onclick='() => SetTab("add")'>
+            ➕ Add Pun
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(activeTab == "delete" ? "active" : "")" @onclick='() => SetTab("delete")'>🗑️ Delete Pun</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    @if (activeTab == "get")
+    {
+        <div class="tab-pane fade show active">
+            <div class="mb-3">
+                <label>Pun Key:</label>
+                <textarea @bind="punKey" class="form-control" rows="1"></textarea>
+            </div>
+            <button class="btn btn-success" @onclick="GetPunFromServer">Get Redis Data</button>
+
+            @if (!string.IsNullOrEmpty(punText))
+            {
+                <div class="mt-3 text-success">🎉 Pun found in Redis: <strong>@punText</strong></div>
+            }
+            else if (isPunnNotAvailable)
+            {
+                <div class="mt-3 text-danger">⚠️ Pun not found in Redis.</div>
+            }
+        </div>
+    }
+    else if (activeTab == "add")
+    {
+        <div class="tab-pane fade show active">
+            <div class="mb-3">
+                <label>Pun Text:</label>
+                <textarea @bind="punText" class="form-control" rows="1"></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Pun Key:</label>
+                <textarea @bind="punKey" class="form-control" rows="1"></textarea>
+            </div>
+            <button class="btn btn-success" @onclick="LoadPunFromServer">Add Pun to Redis</button>
+
+            @if (!string.IsNullOrEmpty(punns.PunText))
+            {
+                <div class="mt-3 text-success">
+                    ✅ Pun added or updated:<br />
+                    <strong>Key:</strong> @punns.PunKey<br />
+                    <strong>Text:</strong> @punns.PunText
+                </div>
+            }
+        </div>
+    }
+    else if (activeTab == "delete")
+    {
+        <div class="tab-pane fade show active">
+            <div class="mb-3">
+                <label>Pun Key to Delete:</label>
+                <textarea @bind="punKey" class="form-control" rows="1"></textarea>
+            </div>
+            <button class="btn btn-danger" @onclick="DeletePunFromRedis">Delete Pun</button>
+
+            @if (!string.IsNullOrEmpty(deleteStatus))
+            {
+                <div class="mt-3 text-info">@deleteStatus</div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private string activeTab = "get";
+
+    private string punFact = "";
+    private string punText = "";
+    private string punKey = "";
+    private string deleteStatus = "";
+    private bool isPunnNotAvailable = false;
+
+    private PunDto punns = new();
+
+    private void SetTab(string tabName)
+    {
+        activeTab = tabName;
+        punText = "";
+        punKey = "";
+        punFact = "";
+        deleteStatus = "";
+        isPunnNotAvailable = false;
+        punns = new();
+    }
+
+    private async Task LoadPunFromServer()
+    {
+        punns = new PunDto
+        {
+            PunText = punText,
+            PunKey = punKey
+        };
+
+        await Http.PostAsJsonAsync("api/pun", punns);
+    }
+
+    private async Task GetPunFromServer()
+    {
+        isPunnNotAvailable = false;
+        punFact = await Http.GetStringAsync($"api/pun?punKey={punKey}");
+
+        punText = !string.IsNullOrEmpty(punFact) ? punFact : "";
+        isPunnNotAvailable = string.IsNullOrEmpty(punFact);
+    }
+    private async Task DeletePunFromRedis()
+    {
+        var response = await Http.DeleteAsync($"api/pun?punKey={punKey}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            deleteStatus = "✅ Pun successfully deleted from Redis.";
+        }
+        else
+        {
+            deleteStatus = "⚠️ Failed to delete the pun (may not exist).";
+        }
+    }
+
+    class PunDto
+    {
+        public string PunText { get; set; } = "";
+        public string PunKey { get; set; } = "";
+    }
+}
